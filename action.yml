@@ -24,3 +24,6 @@ outputs:
 runs:
   using: 'node16'
   main: 'dist/index.js'
+branding:
+  icon: box
+  color: gray-dark
