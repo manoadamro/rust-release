@@ -1,0 +1,20 @@
+name: 'Rust Release'
+description: 'Create a github release from version in Cargo.toml on push to main'
+inputs:
+  token:
+    description: 'Github Token'
+    required: true
+  branch:
+    description: 'Target Branch'
+    required: true
+    default: 'main'
+  cargo:
+    description: 'Cargo.toml path'
+    required: true
+    default: 'Cargo.toml'
+outputs:
+  version:
+    description: 'The Release Tag'
+runs:
+  using: 'node16'
+  main: 'index.js'
