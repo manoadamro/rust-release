@@ -1,5 +1,5 @@
 {
-  "name": "rust-release-action",
+  "name": "rust-release",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
