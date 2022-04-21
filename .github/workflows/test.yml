@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'README.md'
-    branches: [ main ]
+    branches: [ master ]
 
 env:
   CARGO_TERM_COLOR: always
