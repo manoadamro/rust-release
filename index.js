@@ -13,7 +13,7 @@ async function run() {
     // get workflow inputs
     const dry_run = core.getInput(`dry_run`, { required: true });
     const owner = core.getInput(`owner`, { required: true });
-    const repo = core.getInput(`repo`, { required: true }).split("/").slice(-1);
+    const repo = core.getInput(`repo`, { required: true }).split("/").slice(-1)[0];
     const token = core.getInput('token', { required: true });
     const cargo_path = core.getInput('cargo', { required: true });
 
