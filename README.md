@@ -13,7 +13,6 @@ __Only works for rust projects.__
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "version = \"0.1.0\"" > Cargo.toml
       - uses: manoadamro/rust-release@v1
         with:
           owner: ${{ github.repository_owner }}
