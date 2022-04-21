@@ -4,15 +4,12 @@ inputs:
   owner:
     description: 'Github Repo Owner'
     required: true
-    default:  ${{ github.repository_owner }}
   repo:
     description: 'Github Repo'
     required: true
-    default: ${{ github.repository }}
   token:
     description: 'Github Token'
     required: true
-    default: ${{ secrets.GITHUB_TOKEN }}
   cargo:
     description: 'Cargo.toml path'
     required: true
