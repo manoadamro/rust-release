@@ -11,10 +11,13 @@ async function run() {
 
   try {
     // get workflow inputs
+    const dry_run = core.getInput(`dry_run`, { required: true });
     const owner = core.getInput(`owner`, { required: true });
-    const repo = core.getInput(`repo`, { required: true });
+    const repo = core.getInput(`repo`, { required: true }).split("/").slice(-1);
     const token = core.getInput('token', { required: true });
     const cargo_path = core.getInput('cargo', { required: true });
+
+    console.log(repo)
 
     core.info("Getting cargo file contents...");
     const cargo_content = fs.readFileSync(cargo_path, 'utf8').toString();
@@ -38,13 +41,17 @@ async function run() {
       core.notice(`Release with tag ${cargo_version} already exists`)
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
-      const _response = octokit.rest.repos.createRelease({
-        owner: owner,
-        repo: repo,
-        tag_name: release_name,
-        name: release_name,
+      if(dry_run === "false") {
+        const _response = octokit.rest.repos.createRelease({
+          owner: owner,
+          repo: repo,
+          tag_name: release_name,
+          name: release_name,
 
-      })
+        })
+      } else {
+        core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`)
+      }
       core.notice(`Created release with tag ${cargo_version}`)
     }
 
