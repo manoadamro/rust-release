@@ -1,4 +1,4 @@
-# Cargo Release
+# Rust Release
 
 Github action to automatically create a github release on merge to main.
 
@@ -14,7 +14,7 @@ __Only works for rust projects.__
     steps:
       - uses: actions/checkout@v3
       - run: echo "version = \"0.1.0\"" > Cargo.toml
-      - uses: manoadamro/cargo-release@v1
+      - uses: manoadamro/rust-release@v1
         with:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.repository }}

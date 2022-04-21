@@ -17,8 +17,6 @@ async function run() {
     const token = core.getInput('token', { required: true });
     const cargo_path = core.getInput('cargo', { required: true });
 
-    console.log(repo)
-
     core.info("Getting cargo file contents...");
     const cargo_content = fs.readFileSync(cargo_path, 'utf8').toString();
 
