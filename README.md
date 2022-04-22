@@ -1,6 +1,7 @@
 # Rust Release
 
-Github action to automatically create a github release on merge to main.
+Github action to automatically create a github release on merge to main. <br>
+Skips if a release already exists with the version defined in `Cargo.toml`.
 
 __Only works for rust projects.__
 
@@ -9,7 +10,7 @@ __Only works for rust projects.__
 ## Example
 
 ```yaml
-  test-release:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
