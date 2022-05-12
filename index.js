@@ -20,7 +20,7 @@ async function run() {
     const body_path = core.getInput('body_path', { required: false });
     const owner = core.getInput('owner', { required: false }) || currentOwner;
     const repo = core.getInput('repo', { required: false }) || currentRepo;
-    const dry_run = core.getInput(`dry_run`, { required: false }) === 'true';
+    const dry_run = core.getInput('dry_run', { required: false }) === 'true';
 
     core.info("Getting content of the body...");
     let bodyFileContent = null;
