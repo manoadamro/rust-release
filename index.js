@@ -11,11 +11,12 @@ async function run() {
 
   try {
     // get workflow inputs
-    const dry_run = core.getInput(`dry_run`, { required: true });
+    const dry_run = core.getInput(`dry_run`, { required: false });
     const owner = core.getInput(`owner`, { required: true });
     const repo = core.getInput(`repo`, { required: true }).split("/").slice(-1)[0];
     const token = core.getInput('token', { required: true });
-    const cargo_path = core.getInput('cargo', { required: true });
+    const cargo_path = core.getInput('cargo', { required: false });
+    const body = core.getInput('body', { required: false });
 
     core.info("Getting cargo file contents...");
     const cargo_content = fs.readFileSync(cargo_path, 'utf8').toString();
@@ -40,13 +41,23 @@ async function run() {
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === "false") {
-        const _response = octokit.rest.repos.createRelease({
+        const createReleaseResponse = octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,
           name: release_name,
-
+          body: body || `Release ${release_name}`,
         })
+
+        // Get the ID, html_url, and upload URL for the created Release from the response
+        const {
+          data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
+        } = createReleaseResponse;
+
+        // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
+        core.setOutput('id', releaseId);
+        core.setOutput('html_url', htmlUrl);
+        core.setOutput('upload_url', uploadUrl);
       } else {
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`)
       }
