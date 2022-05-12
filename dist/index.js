@@ -8518,13 +8518,13 @@ async function run() {
       repo: repo,
     });
 
-    id             = null
-    tag_name       = null
-    html_url       = null
-    upload_url     = null
-    is_new_release = null
+    id             = null;
+    tag_name       = null;
+    html_url       = null;
+    upload_url     = null;
+    is_new_release = null;
 
-    release = null
+    release = null;
     const existing = releases.data.some(i => i.name === release_name);
     if (existing) {
       release = releases.data.filter(i => i.name === release_name)[0];
@@ -8554,10 +8554,10 @@ async function run() {
     core.setOutput('cargo_version', cargo_version);
     if (release != null) {
       // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-      id         = release.id
-      tag_name   = release.tag_name
-      html_url   = release.html_url
-      upload_url = release.upload_url
+      id         = release.data.id
+      tag_name   = release.data.tag_name
+      html_url   = release.data.html_url
+      upload_url = release.data.upload_url
     }
     core.setOutput('id', id);
     core.setOutput('tag_name', tag_name);
@@ -8572,7 +8572,7 @@ async function run() {
     core.info(`Release HTML URL: ${html_url}`);
     core.info(`Release Upload URL: ${upload_url}`);
     core.info(`Is new release: ${is_new_release}`);
-    
+
   } catch (error) {
     core.setFailed(error.message);
   }
