@@ -8544,6 +8544,7 @@ async function run() {
       core.setOutput('id', release.id);
       core.setOutput('html_url', release.html_url);
       core.setOutput('upload_url', release.upload_url);
+      core.info(`Upload URL: ${release.upload_url}`);
     }
 
     // output the crate version
