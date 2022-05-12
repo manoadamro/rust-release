@@ -24,9 +24,9 @@ async function run() {
 
     core.info("Getting content of the body...");
     let bodyFileContent = null;
-    if (bodyPath !== '' && !!bodyPath) {
+    if (body_path !== '' && !!body_path) {
       try {
-        bodyFileContent = fs.readFileSync(bodyPath, { encoding: 'utf8' });
+        bodyFileContent = fs.readFileSync(body_path, { encoding: 'utf8' });
       } catch (error) {
         core.setFailed(error.message);
       }
@@ -47,34 +47,38 @@ async function run() {
       owner: owner,
       repo: repo,
     });
+    release = null
     const existing = releases.data.some(i => i.name === release_name);
     if (existing) {
+      release = releases.data.filter(i => i.name === release_name)[0];
       core.info(`Skipping: Release with tag ${cargo_version} already exists`)
       core.notice(`Release with tag ${cargo_version} already exists`)
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === "false") {
-        const createReleaseResponse = github.repos.createRelease({
+        release = github.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,
           name: release_name,
           body: body || `Release ${release_name}`,
         })
-
-        // Get the ID, html_url, and upload URL for the created Release from the response
-        const {
-          data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
-        } = createReleaseResponse;
-
-        // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-        core.setOutput('id', releaseId);
-        core.setOutput('html_url', htmlUrl);
-        core.setOutput('upload_url', uploadUrl);
       } else {
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`)
       }
       core.notice(`Created release with tag ${cargo_version}`)
+    }
+
+    if (release != null) {
+      // Get the ID, html_url, and upload URL for the created Release from the response
+      const {
+        data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
+      } = release;
+
+      // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
+      core.setOutput('id', releaseId);
+      core.setOutput('html_url', htmlUrl);
+      core.setOutput('upload_url', uploadUrl);
     }
 
     // output the crate version
