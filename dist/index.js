@@ -8485,12 +8485,12 @@ async function run() {
     const { owner: currentOwner, repo: currentRepo } = github.context.repo;
         
     // get workflow inputs
-    const cargo_path = core.getInput('cargo_path', { required: false }) || 'Cargo.toml';
+    const cargo_path = core.getInput('cargo_path', { required: false });
     const body = core.getInput('body', { required: false });
     const body_path = core.getInput('body_path', { required: false });
     const owner = core.getInput('owner', { required: false }) || currentOwner;
     const repo = core.getInput('repo', { required: false }) || currentRepo;
-    const dry_run = core.getInput('dry_run', { required: false }) === 'true';
+    const dry_run = core.getInput('dry_run', { required: false });
 
     core.info("Getting content of the body...");
     let bodyFileContent = null;
@@ -8525,7 +8525,7 @@ async function run() {
       core.notice(`Release with tag ${cargo_version} already exists`)
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
-      if(dry_run) {
+      if(!dry_run) {
         release = octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
