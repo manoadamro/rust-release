@@ -10,16 +10,16 @@ inputs:
   token:
     description: 'Github Token'
     required: true
-  cargo:
+  cargo_path:
     description: 'Cargo.toml path'
-    required: true
+    required: false
     default: 'Cargo.toml'
   body:
     description: 'Text describing the contents of the release'
     required: false
   dry_run:
     description: 'do not actually create release'
-    required: true
+    required: false
     default: false
 outputs:
   version:

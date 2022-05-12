@@ -11,12 +11,12 @@ async function run() {
 
   try {
     // get workflow inputs
-    const dry_run = core.getInput(`dry_run`, { required: false });
     const owner = core.getInput(`owner`, { required: true });
     const repo = core.getInput(`repo`, { required: true }).split("/").slice(-1)[0];
     const token = core.getInput('token', { required: true });
-    const cargo_path = core.getInput('cargo', { required: false });
+    const cargo_path = core.getInput('cargo_path', { required: false });
     const body = core.getInput('body', { required: false });
+    const dry_run = core.getInput(`dry_run`, { required: false }) === 'true';
 
     core.info("Getting cargo file contents...");
     const cargo_content = fs.readFileSync(cargo_path, 'utf8').toString();
