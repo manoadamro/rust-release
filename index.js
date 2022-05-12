@@ -12,7 +12,7 @@ async function run() {
     const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
     // Get owner and repo from context of payload that triggered the action
-    const { owner: currentOwner, repo: currentRepo } = context.repo;
+    const { owner: currentOwner, repo: currentRepo } = github.context.repo;
         
     // get workflow inputs
     const cargo_path = core.getInput('cargo_path', { required: false }) || 'Cargo.toml';
