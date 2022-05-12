@@ -8530,10 +8530,11 @@ async function run() {
       release = releases.data.filter(i => i.name === release_name)[0];
       core.info(`Skipping: Release with tag ${cargo_version} already exists`);
       core.notice(`Release with tag ${cargo_version} already exists`);
-      is_new_release = false;
+      is_new_release = 'false';
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
+        is_new_release = 'true';
         release = await octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
@@ -8541,10 +8542,8 @@ async function run() {
           name: release_name,
           body: bodyFileContent || body || `Release ${release_name}`,
         });
-        is_new_release = true;
       } else {
-        is_new_release = false;
-        core.setOutput('is_new_release', false);
+        is_new_release = 'false';
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`);
       }
       core.notice(`Created release with tag ${cargo_version}`);
