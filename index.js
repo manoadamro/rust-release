@@ -47,13 +47,20 @@ async function run() {
       owner: owner,
       repo: repo,
     });
+
+    id             = null
+    tag_name       = null
+    html_url       = null
+    upload_url     = null
+    is_new_release = null
+
     release = null
     const existing = releases.data.some(i => i.name === release_name);
     if (existing) {
       release = releases.data.filter(i => i.name === release_name)[0];
-      core.info(`Skipping: Release with tag ${cargo_version} already exists`)
-      core.notice(`Release with tag ${cargo_version} already exists`)
-      core.setOutput('is_new_release', false);
+      core.info(`Skipping: Release with tag ${cargo_version} already exists`);
+      core.notice(`Release with tag ${cargo_version} already exists`);
+      is_new_release = false;
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
@@ -63,29 +70,39 @@ async function run() {
           tag_name: release_name,
           name: release_name,
           body: bodyFileContent || body || `Release ${release_name}`,
-        })
-        core.setOutput('is_new_release', true);
+        });
+        is_new_release = true;
       } else {
+        is_new_release = false;
         core.setOutput('is_new_release', false);
-        core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`)
+        core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`);
       }
-      core.notice(`Created release with tag ${cargo_version}`)
+      core.notice(`Created release with tag ${cargo_version}`);
     }
 
+    // Set output variables
+    core.setOutput('cargo_version', cargo_version);
     if (release != null) {
       // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-      core.setOutput('id', release.id);
-      core.setOutput('html_url', release.html_url);
-      core.setOutput('upload_url', release.upload_url);
-      core.setOutput('tag_name', release.tag_name);
-      core.info(`Release ID: ${release.id}`);
-      core.info(`Release HTML URL: ${release.html_url}`);
-      core.info(`Release Upload URL: ${release.upload_url}`);
-      core.info(`Release Tag Name: ${release.tag_name}`);
+      id         = release.id
+      tag_name   = release.tag_name
+      html_url   = release.html_url
+      upload_url = release.upload_url
     }
+    core.setOutput('id', id);
+    core.setOutput('tag_name', tag_name);
+    core.setOutput('html_url', html_url);
+    core.setOutput('upload_url', upload_url);
+    core.setOutput('is_new_release', is_new_release);
 
-    // output the crate version
-    core.setOutput('version', cargo_version);
+    // Log the output variables
+    core.info(`Cargo Version: ${cargo_version}`);
+    core.info(`Release ID: ${id}`);
+    core.info(`Release Tag Name: ${tag_name}`);
+    core.info(`Release HTML URL: ${html_url}`);
+    core.info(`Release Upload URL: ${upload_url}`);
+    core.info(`Is new release: ${is_new_release}`);
+    
   } catch (error) {
     core.setFailed(error.message);
   }

@@ -22,7 +22,7 @@ inputs:
     required: false
     default: false
 outputs:
-  version:
+  cargo_version:
     description: 'The version identified from Cargo'
   id:
     description: 'The ID of the created Release'
