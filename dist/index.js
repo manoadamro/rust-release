@@ -8540,15 +8540,15 @@ async function run() {
     }
 
     if (release != null) {
-      // Get the ID, html_url, and upload URL for the created Release from the response
-      const {
-        data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
-      } = release;
+      // // Get the ID, html_url, and upload URL for the created Release from the response
+      // const {
+      //   data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
+      // } = release;
 
       // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-      core.setOutput('id', releaseId);
-      core.setOutput('html_url', htmlUrl);
-      core.setOutput('upload_url', uploadUrl);
+      core.setOutput('id', release.data.id);
+      core.setOutput('html_url', release.data.html_url);
+      core.setOutput('upload_url', release.data.upload_url);
     }
 
     // output the crate version
