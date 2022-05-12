@@ -8531,7 +8531,7 @@ async function run() {
           repo: repo,
           tag_name: release_name,
           name: release_name,
-          body: body || `Release ${release_name}`,
+          body: bodyFileContent || body || `Release ${release_name}`,
         })
       } else {
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`)
@@ -8544,7 +8544,11 @@ async function run() {
       core.setOutput('id', release.id);
       core.setOutput('html_url', release.html_url);
       core.setOutput('upload_url', release.upload_url);
-      core.info(`Upload URL: ${release.upload_url}`);
+      core.setOutput('tag_name', release.tag_name);
+      core.info(`Release ID: ${release.id}`);
+      core.info(`Release HTML URL: ${release.html_url}`);
+      core.info(`Release Upload URL: ${release.upload_url}`);
+      core.info(`Release Tag Name: ${release.tag_name}`);
     }
 
     // output the crate version

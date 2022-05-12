@@ -23,9 +23,11 @@ inputs:
     default: false
 outputs:
   version:
-    description: 'The Release Tag'
+    description: 'The version identified from Cargo'
   id:
     description: 'The ID of the created Release'
+  tag_name:
+    description: 'The tag name of the created Release'
   html_url:
     description: 'The URL users can navigate to in order to view the release'
   upload_url:
