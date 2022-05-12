@@ -1,7 +1,5 @@
-const github = require('@actions/github');
 const core = require('@actions/core');
-const glob = require('@actions/glob');
-const { Octokit } = require("@octokit/rest");
+const { GitHub, context } = require('@actions/github');
 const fs = require('fs')
 
 
@@ -10,13 +8,29 @@ async function run() {
   core.info("Starting...")
 
   try {
+    // Get authenticated GitHub client (Ocktokit): https://github.com/actions/toolkit/tree/master/packages/github#usage
+    const github = new GitHub(process.env.GITHUB_TOKEN);
+
+    // Get owner and repo from context of payload that triggered the action
+    const { owner: currentOwner, repo: currentRepo } = context.repo;
+        
     // get workflow inputs
-    const owner = core.getInput(`owner`, { required: true });
-    const repo = core.getInput(`repo`, { required: true }).split("/").slice(-1)[0];
-    const token = core.getInput('token', { required: true });
-    const cargo_path = core.getInput('cargo_path', { required: false });
+    const cargo_path = core.getInput('cargo_path', { required: false }) || 'Cargo.toml';
     const body = core.getInput('body', { required: false });
+    const body_path = core.getInput('body_path', { required: false });
+    const owner = core.getInput('owner', { required: false }) || currentOwner;
+    const repo = core.getInput('repo', { required: false }) || currentRepo;
     const dry_run = core.getInput(`dry_run`, { required: false }) === 'true';
+
+    core.info("Getting content of the body...");
+    let bodyFileContent = null;
+    if (bodyPath !== '' && !!bodyPath) {
+      try {
+        bodyFileContent = fs.readFileSync(bodyPath, { encoding: 'utf8' });
+      } catch (error) {
+        core.setFailed(error.message);
+      }
+    }
 
     core.info("Getting cargo file contents...");
     const cargo_content = fs.readFileSync(cargo_path, 'utf8').toString();
@@ -29,8 +43,7 @@ async function run() {
 
     // check current releases for existing version
     const release_name = `v${cargo_version}`
-    const octokit = github.getOctokit(token);
-    const releases = await octokit.rest.repos.listReleases({
+    const releases = await github.repos.listReleases({
       owner: owner,
       repo: repo,
     });
@@ -41,7 +54,7 @@ async function run() {
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === "false") {
-        const createReleaseResponse = octokit.rest.repos.createRelease({
+        const createReleaseResponse = github.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,

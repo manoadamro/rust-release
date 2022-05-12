@@ -1,21 +1,21 @@
 name: 'Rust Release'
 description: 'Create a github release from version in Cargo.toml on push to main'
 inputs:
-  owner:
-    description: 'Github Repo Owner'
-    required: true
-  repo:
-    description: 'Github Repo'
-    required: true
-  token:
-    description: 'Github Token'
-    required: true
   cargo_path:
     description: 'Cargo.toml path'
     required: false
     default: 'Cargo.toml'
   body:
     description: 'Text describing the contents of the release'
+    required: false
+  body_path:
+    description: 'Path to file with information about the tag.'
+    required: false
+  owner:
+    description: 'Owner of the repository if it is not the current one'
+    required: false
+  repo:
+    description: 'Repository on which to release.  Used only if you want to create the release on another repo'
     required: false
   dry_run:
     description: 'do not actually create release'
