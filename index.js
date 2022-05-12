@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const { GitHub, context } = require('@actions/github');
+const github = require('@actions/github');
 const fs = require('fs')
 
 
@@ -9,7 +9,7 @@ async function run() {
 
   try {
     // Get authenticated GitHub client (Ocktokit): https://github.com/actions/toolkit/tree/master/packages/github#usage
-    const github = new GitHub(process.env.GITHUB_TOKEN);
+    const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
     // Get owner and repo from context of payload that triggered the action
     const { owner: currentOwner, repo: currentRepo } = context.repo;
@@ -43,7 +43,7 @@ async function run() {
 
     // check current releases for existing version
     const release_name = `v${cargo_version}`
-    const releases = await github.repos.listReleases({
+    const releases = await octokit.rest.repos.listReleases({
       owner: owner,
       repo: repo,
     });
@@ -56,7 +56,7 @@ async function run() {
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === "false") {
-        release = github.repos.createRelease({
+        release = octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,
