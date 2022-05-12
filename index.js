@@ -76,9 +76,9 @@ async function run() {
       // } = release;
 
       // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-      core.setOutput('id', release.data.id);
-      core.setOutput('html_url', release.data.html_url);
-      core.setOutput('upload_url', release.data.upload_url);
+      core.setOutput('id', release.id);
+      core.setOutput('html_url', release.html_url);
+      core.setOutput('upload_url', release.upload_url);
     }
 
     // output the crate version
