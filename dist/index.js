@@ -8540,11 +8540,6 @@ async function run() {
     }
 
     if (release != null) {
-      // // Get the ID, html_url, and upload URL for the created Release from the response
-      // const {
-      //   data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl }
-      // } = release;
-
       // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
       core.setOutput('id', release.id);
       core.setOutput('html_url', release.html_url);
