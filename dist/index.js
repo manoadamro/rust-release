@@ -8534,7 +8534,7 @@ async function run() {
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
-        release = octokit.rest.repos.createRelease({
+        release = await octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,
@@ -8554,10 +8554,10 @@ async function run() {
     core.setOutput('cargo_version', cargo_version);
     if (release != null) {
       // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-      id         = release.data.id
-      tag_name   = release.data.tag_name
-      html_url   = release.data.html_url
-      upload_url = release.data.upload_url
+      id         = release.id
+      tag_name   = release.tag_name
+      html_url   = release.html_url
+      upload_url = release.upload_url
     }
     core.setOutput('id', id);
     core.setOutput('tag_name', tag_name);
