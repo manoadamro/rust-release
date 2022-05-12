@@ -55,7 +55,7 @@ async function run() {
       core.notice(`Release with tag ${cargo_version} already exists`)
     } else {
       core.info(`Creating release with tag ${cargo_version}...`)
-      if(!dry_run) {
+      if(dry_run === 'false') {
         release = octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
