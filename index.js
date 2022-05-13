@@ -66,7 +66,7 @@ async function run() {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
         is_new_release = 'true';
-        log.info("Starting to create release");
+        core.info("Starting to create release");
         release = octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
@@ -75,7 +75,7 @@ async function run() {
           body: bodyFileContent || body || `Release ${release_name}`,
         })
         .then(response => {
-          log.info("Finished creating release");
+          core.info("Finished creating release");
           return response;
         });
       } else {
