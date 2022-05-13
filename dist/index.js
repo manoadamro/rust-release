@@ -8472,7 +8472,7 @@ const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const fs = __nccwpck_require__(7147)
 
-function create_release(octokit, owner, repo, tag_name, name, body) {
+async function create_release(octokit, owner, repo, tag_name, name, body) {
   core.info("Starting to create release");
   const release = octokit.rest.repos.createRelease({
     owner: owner,
@@ -8551,7 +8551,7 @@ async function run() {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
         is_new_release = 'true';
-        release = create_release(
+        release = await create_release(
           octokit,
           owner,
           repo,
