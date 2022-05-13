@@ -8536,14 +8536,18 @@ async function run() {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
         is_new_release = 'true';
-        const release_result = await octokit.rest.repos.createRelease({
+        log.info("Starting to create release");
+        release = octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,
           name: release_name,
           body: bodyFileContent || body || `Release ${release_name}`,
+        })
+        .then(response => {
+          log.info("Finished creating release");
+          return response;
         });
-        release = release_result;
       } else {
         is_new_release = 'false';
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`);
