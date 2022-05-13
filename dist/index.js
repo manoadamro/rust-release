@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7351:
@@ -8492,6 +8492,13 @@ async function run() {
     const repo = core.getInput('repo', { required: false }) || currentRepo;
     const dry_run = core.getInput('dry_run', { required: false });
 
+    // initialize outputs
+    id             = null;
+    tag_name       = null;
+    html_url       = null;
+    upload_url     = null;
+    is_new_release = null;
+
     core.info("Getting content of the body...");
     let bodyFileContent = null;
     if (body_path !== '' && !!body_path) {
@@ -8517,12 +8524,6 @@ async function run() {
       owner: owner,
       repo: repo,
     });
-
-    id             = null;
-    tag_name       = null;
-    html_url       = null;
-    upload_url     = null;
-    is_new_release = null;
 
     release = null;
     const existing = releases.data.some(i => i.name === release_name);
@@ -8584,3 +8585,4 @@ run();
 module.exports = __webpack_exports__;
 /******/ })()
 ;
+//# sourceMappingURL=index.js.map
