@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7351:
@@ -8525,7 +8525,7 @@ async function run() {
       repo: repo,
     });
 
-    release = null;
+    release = null
     const existing = releases.data.some(i => i.name === release_name);
     if (existing) {
       release = releases.data.filter(i => i.name === release_name)[0];
@@ -8536,13 +8536,14 @@ async function run() {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
         is_new_release = 'true';
-        release = await octokit.rest.repos.createRelease({
+        const release_result = await octokit.rest.repos.createRelease({
           owner: owner,
           repo: repo,
           tag_name: release_name,
           name: release_name,
           body: bodyFileContent || body || `Release ${release_name}`,
         });
+        release = release_result;
       } else {
         is_new_release = 'false';
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`);
@@ -8585,4 +8586,3 @@ run();
 module.exports = __webpack_exports__;
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map
