@@ -2,21 +2,6 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs')
 
-async function create_release(octokit, owner, repo, tag_name, name, body) {
-  core.info("Starting to create release");
-  const release = octokit.rest.repos.createRelease({
-    owner: owner,
-    repo: repo,
-    tag_name: tag_name,
-    name: name,
-    body: body,
-  })
-  .then(response => {
-    core.info("Finished creating release");
-    return response;
-  });
-  return release;
-}
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -81,14 +66,13 @@ async function run() {
       core.info(`Creating release with tag ${cargo_version}...`)
       if(dry_run === 'false') {
         is_new_release = 'true';
-        release = await create_release(
-          octokit,
-          owner,
-          repo,
-          release_name,
-          release_name,
-          bodyFileContent || body || `Release ${release_name}`,
-        );
+        release = await await octokit.rest.repos.createRelease({
+          owner: owner,
+          repo: repo,
+          tag_name: release_name,
+          name: release_name,
+          body: bodyFileContent || body || `Release ${release_name}`,
+        });
       } else {
         is_new_release = 'false';
         core.info(`Would create release with tag ${cargo_version}, but this is a dry run.`);
